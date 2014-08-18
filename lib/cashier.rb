@@ -1,3 +1,3 @@
 class Cashier < ActiveRecord::Base
-  # has_many(:checkouts)
+  # has_one :checkout
 end
