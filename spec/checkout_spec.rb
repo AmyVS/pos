@@ -8,7 +8,7 @@ describe Checkout do
     expect(checkout.purchases).to eq [purchase1, purchase2]
   end
 
-  it 'has many customers' do
+  it 'has one customer' do
     customer = Customer.create
     cashier = Cashier.create
     checkout = Checkout.create({:customer_id => customer.id, :cashier_id => cashier.id})
