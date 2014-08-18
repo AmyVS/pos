@@ -1,3 +1,3 @@
 class Cashier < ActiveRecord::Base
-  # has_one :checkout
+  belongs_to :checkout
 end
