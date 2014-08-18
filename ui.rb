@@ -44,21 +44,19 @@ def main_menu
 end
 
 def cashier_menu
-  choice = nil
-  until == 'x'
-    puts "\nEnter 'n' to check out a new patron"
-    puts "Enter 'x' to exit to the main menu"
 
-    choice = gets.chomp
-    case choice
-    when 'n'
-      checkout_patron
-    when 'x'
-      main_menu
-    else
-      puts "\nThat is not a valid option, try again."
-      cashier_menu
-    end
+  puts "\nEnter 'n' to check out a new patron"
+  puts "Enter 'x' to exit to the main menu"
+
+  choice = gets.chomp
+  case choice
+  when 'n'
+    checkout_patron
+  when 'x'
+    main_menu
+  else
+    puts "\nThat is not a valid option, try again."
+    cashier_menu
   end
 end
 
