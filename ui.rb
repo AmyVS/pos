@@ -5,9 +5,12 @@ require './lib/product'
 require './lib/checkout'
 require './lib/purchase'
 
-ActiveRecord::Base.establish_connection(YAML::load(File.open('.db/config.yml'))['development'])
+ActiveRecord::Base.establish_connection(YAML::load(File.open('./db/config.yml'))['development'])
 
-def Welcome
+@current_cashier = nil
+@current_product = nil
+
+def welcome
   system('clear')
   puts "*" * 40
   puts "Welcome to Vic's Snowboard shop."
@@ -45,7 +48,25 @@ end
 
 def cashier_menu
 
-  puts "\nEnter 'n' to check out a new patron"
+  if Cashier.all.length == 0
+    puts "\nNo cashiers listed. Please get a manager."
+    manager_menu
+  else
+    puts Cashier.show_list
+    puts 'Please select your number'
+    cashier_number = gets.chomp
+
+    @current_cashier = Cashier.all.fetch((cashier_number.to_i)-1) do |number|
+      puts "#{number+1} is not a valid choice. Please get a manager."
+      manager_menu
+    end
+    puts "Welcome back, #{@current_cashier.name}!"
+    new_patron
+  end
+end
+
+def new_patron
+  puts "\nEnter 'n' to checkout a new patron"
   puts "Enter 'x' to exit to the main menu"
 
   choice = gets.chomp
@@ -61,24 +82,30 @@ def cashier_menu
 end
 
 def checkout_patron
-  puts "\nDo you have a new customer? y/n"
-  choice = gets.chomp
+  patron = Customer.create
+  puts "Customer ID is #{patron.id}"
+  cart
+end
 
-  case choice
-  when 'y'
-    if Product.all.length == 0
-      puts "\nNo products available. Please get a manager."
-      manager_menu
-    else
-      puts Product.show_list
-      new_customer = Customer.new
-      puts "Please enter id number to add a product to patrons cart"
-      item = gets.chomp
+def cart
+  if Product.all.length == 0
+    puts "\nNo products available. Please get a manager."
+    manager_menu
+  else
+    puts Product.show_list
+    puts "Please enter id number to add a product to patron's cart"
+    item = gets.chomp
 
-      puts "Please enter the quantity of that item"
-      quantity = gets.chomp
-
+    @current_product = Product.all.fetch((item.to_i)-1) do |number|
+      puts "#{number+1} is not a valid choice. Please try again."
+      cart
     end
+
+    puts "Please enter the quantity of that item"
+    quantity = gets.chomp
+    # stopped here
+
+  end
 
   when 'n'
     puts "\nNo worries, returning to cashier menu..."
@@ -97,4 +124,6 @@ end
 def patron_receipt
 
 end
+
+welcome
 
