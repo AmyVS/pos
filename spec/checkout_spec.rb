@@ -1,11 +1,12 @@
 require 'spec_helper'
 
 describe Checkout do
-  # it 'adds a product and customer id to purchase table and adjust the products quantity' do
-  #   cashier = Cashier.create({:name => 'Vic'})
-  #   patron = Customer.create
-  #   product1 = Product.create({:name => 'snowboard', :price => 450.00, :quantity => 5})
-  #   product2 = Product.create({:name => 'bindings', :price => 150.00, :quantity => 10})
-  #   expect(patron.purchases).to eq [product1, product2]
-  # end
+  it 'has many purchases' do
+    product1 = Product.create({:name => 'snowboard', :price => 450.0})
+    product2 = Product.create({:name => 'bindings', :price => 150.0})
+    checkout = Checkout.create({:customer_id => 1, :cashier_id => 4})
+    purchase1 = Purchase.create({:product_id => product1.id, :checkout_id => checkout.id, :quantity => 1})
+    purchase2 = Purchase.create({:product_id => product2.id, :checkout_id => checkout.id, :quantity => 2})
+    expect(checkout.purchases).to eq [purchase1, purchase2]
+  end
 end
