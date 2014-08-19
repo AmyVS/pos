@@ -132,15 +132,27 @@ def cart
 end
 
 def manager_menu
-
+  puts "This is a very official menu"
+  add_cashier
+  add_a_product
+  total_daily_sales
+  total_cashier_checkouts
+  popular_products
+  most_returned
 end
 
 def patron_receipt
   puts "Receipt"
   @running_items.each do |item|
-  puts ("#{item.name}, $#{item.price}")
+    puts ("#{item.name}, $#{item.price}")
+  end
   final_total = @running_cost.inject(:+)
   puts "Your total cost is $#{final_total}"
+end
+def add_cashier
+  puts 'What is the cashier name?'
+  name = gets.chomp
+  Cashier.create(name: name)
 end
 
 welcome
