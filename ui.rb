@@ -7,6 +7,8 @@ require './lib/purchase'
 
 ActiveRecord::Base.establish_connection(YAML::load(File.open('./db/config.yml'))['development'])
 
+@running_cost = []
+@running_items = []
 @current_cashier = nil
 @current_product = nil
 
@@ -103,8 +105,21 @@ def cart
 
     puts "Please enter the quantity of that item"
     quantity = gets.chomp
-    # stopped here
 
+    total_item_price = @current_product.price.to_f * quantity.to_i
+    @running_cost << total_item_price
+
+    @running_items << @current_product
+
+    puts "Do you want to add more items? y/n"
+    choice = gets.chomp
+    case choice
+    when 'y'
+      cart
+    when 'n'
+      puts "Proceeding to checkout..."
+      patron_receipt
+    end
   end
 
   when 'n'
@@ -114,7 +129,6 @@ def cart
     puts "\nThat is not a valid option, try again."
     checkout_patron
   end
-
 end
 
 def manager_menu
@@ -122,7 +136,11 @@ def manager_menu
 end
 
 def patron_receipt
-
+  puts "Receipt"
+  @running_items.each do |item|
+  puts ("#{item.name}, $#{item.price}")
+  final_total = @running_cost.inject(:+)
+  puts "Your total cost is $#{final_total}"
 end
 
 welcome
