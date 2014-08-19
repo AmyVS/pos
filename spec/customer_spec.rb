@@ -1,9 +1,10 @@
 require 'spec_helper'
 
 describe Customer do
-  it 'belongs to a checkout' do
+  it 'has many checkouts' do
     customer = Customer.create
-    checkout = Checkout.create({:customer_id => customer.id, :cashier_id => 4})
-    expect(checkout.customer_id).to eq customer.id
+    checkout1 = Checkout.create({:customer_id => customer.id, :cashier_id => 4})
+    checkout2 = Checkout.create({:customer_id => customer.id, :cashier_id => 4})
+    expect(customer.checkouts).to eq [checkout1, checkout2]
   end
 end
