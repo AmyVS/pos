@@ -21,30 +21,27 @@ def welcome
 end
 
 def main_menu
-  choice = nil
-  until choice == 'x'
+  puts "\n\nWho are you?"
 
-    puts "\n\nWho are you?"
+  puts "\nEnter 'm' for manager menu"
+  puts "Enter 'c' for cashier menu"
+  puts "Enter 'p' for patron menu"
+  puts "Enter 'x' to exit"
+  choice = gets.chomp
 
-    puts "\nEnter 'm' for manager menu"
-    puts "Enter 'c' for cashier menu"
-    puts "Enter 'p' for patron menu"
-    puts "Enter 'x' to exit"
-    choice = gets.chomp
-
-    case choice
-    when 'm'
-      manager_menu
-    when 'c'
-      cashier_menu
-    when 'p'
-      patron_receipt
-    when 'x'
-      puts "\nHave fun hittin' the slopes!"
-    else
-      puts "\nSorry, that's not an option. Please try again."
-      main_menu
-    end
+  case choice
+  when 'm'
+    manager_menu
+  when 'c'
+    cashier_menu
+  when 'p'
+    patron_receipt
+  when 'x'
+    puts "\nHave fun hittin' the slopes!"
+    exit
+  else
+    puts "\nSorry, that's not an option. Please try again."
+    main_menu
   end
 end
 
@@ -194,7 +191,7 @@ def add_product
   choice = gets.chomp
   case choice
   when 'y'
-    add_cashier
+    add_product
   else
     puts "Returning to the manager menu..."
     manager_menu
