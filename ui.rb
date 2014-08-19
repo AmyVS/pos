@@ -121,14 +121,6 @@ def cart
       patron_receipt
     end
   end
-
-  when 'n'
-    puts "\nNo worries, returning to cashier menu..."
-    cashier_menu
-  else
-    puts "\nThat is not a valid option, try again."
-    checkout_patron
-  end
 end
 
 def manager_menu
