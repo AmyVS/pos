@@ -9,9 +9,10 @@ describe Product do
     expect(Product.show_list).to eq ['1. snowboard: $450.0','2. bindings: $150.0']
   end
 
-  it 'belongs to a purchase' do
+  it 'has many purchases' do
     product = Product.create({:name => 'snowboard', :price => 450.0})
-    purchase = Purchase.create({:product_id => product.id, :checkout_id => 1, :quantity => 1})
-    expect(purchase.product_id).to eq product.id
+    purchase1 = Purchase.create({:product_id => product.id, :checkout_id => 1, :quantity => 1})
+    purchase2 = Purchase.create({:product_id => product.id, :checkout_id => 1, :quantity => 1})
+    expect(product.purchases).to eq [purchase1, purchase2]
   end
 end
