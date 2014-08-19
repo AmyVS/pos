@@ -1,5 +1,5 @@
 class Product < ActiveRecord::Base
-  belongs_to :purchase
+  has_many :purchases
 
   def self.show_list
     products = []

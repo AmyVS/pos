@@ -9,4 +9,8 @@ class Cashier < ActiveRecord::Base
     end
     cashiers
   end
+
+  # def method_name
+
+  # end
 end
