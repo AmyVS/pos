@@ -139,12 +139,29 @@ def manager_menu
   puts "'t' to see totaly checkouts"
   puts "'i' to see the most popular items"
   puts "'m' to see most returned"
-  add_cashier
-  add_product
-  total_daily_sales
-  total_cashier_checkouts
-  popular_products
-  most_returned
+  puts "'x' to return to the main menu"
+
+  choice = gets.chomp
+  case choice
+  when 'c'
+    add_cashier
+  when 'p'
+    add_product
+  when 'd'
+    total_daily_sales
+  when 't'
+    total_cashier_checkouts
+  when 'i'
+    popular_items
+  when 'm'
+    most_returned
+  when 'x'
+    puts "Returning to the main menu..."
+    main_menu
+  else
+    puts "Invalid input, please try again."
+    manager_menu
+  end
 end
 
 def patron_receipt
