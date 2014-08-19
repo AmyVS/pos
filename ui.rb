@@ -14,6 +14,7 @@ ActiveRecord::Base.establish_connection(YAML::load(File.open('./db/config.yml'))
 @current_product = nil
 @current_purchase = nil
 @current_checkout = nil
+# @lifetime_sales = ({:product_names => [], :totals_sold => []})
 
 def welcome
   system('clear')
@@ -109,6 +110,8 @@ def cart
 
     @current_purchase = Purchase.create({:product_id => @current_product.id, :quantity => quantity.to_i, :checkout_id => @current_checkout.id})
 
+
+
     total_item_price = @current_product.price.to_f * quantity.to_i
     @running_cost << total_item_price
 
@@ -168,6 +171,7 @@ def patron_receipt
 
   @running_items.clear
   @running_cost.clear
+
   puts "Your total cost is $#{final_total}"
   puts "Thank you! Come again!"
 
@@ -245,5 +249,22 @@ def total_cashier_checkouts
     manager_menu
   end
 end
+
+# def popular_items
+#   total_items_sold = []
+#   popularity = []
+#   Product.all.each do |product|
+#     product_instances = Purchase.where({:product_id => product.id})
+#       product_instances.each do |instance|
+#         total_items_sold << product_instances.length * purchase.quantity
+#       end
+#   end
+
+
+
+#   puts "\n\nProducts sold in order of popularity:\n"
+#   puts popularity
+#   manager_menu
+# end
 
 welcome
