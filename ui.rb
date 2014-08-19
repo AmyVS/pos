@@ -86,7 +86,7 @@ end
 def checkout_patron
   patron = Customer.create
   puts "Customer ID is #{patron.id}"
-  @current_checkout = Checkout.create({:cashier_id => @current_cashier.id, :customer_id => patron.id})
+  @current_checkout = Checkout.create({:cashier_id => @current_cashier.id, :customer_id => patron.id, :total => nil})
   cart
 end
 
@@ -131,7 +131,7 @@ def manager_menu
   puts "'c' to add a cashier"
   puts "'p' to add a product"
   puts "'d' to see total daily sales"
-  puts "'t' to see totaly checkouts"
+  puts "'t' to see total checkouts for a cashier"
   puts "'i' to see the most popular items"
   puts "'m' to see most returned"
   puts "'x' to return to the main menu"
@@ -165,8 +165,14 @@ def patron_receipt
     puts ("#{item.name}, $#{item.price}")
   end
   final_total = @running_cost.inject(:+)
+
+  @running_items.clear
+  @running_cost.clear
   puts "Your total cost is $#{final_total}"
   puts "Thank you! Come again!"
+
+
+  @current_checkout.update({:total => final_total.to_f})
   new_patron
 end
 
@@ -221,7 +227,15 @@ def total_cashier_checkouts
     puts "#{index+1}. #{purchase.product.name} -- quantity: #{purchase.quantity}, price: $#{purchase.product.price}"
   end
 
-  puts "Would you like to see another cashier's history? y/n"
+  patron_number = Checkout.where({:cashier_id => @current_cashier.id})
+  puts "\n\n#{@current_cashier.name} has helped #{patron_number.length} patrons"
+
+  checkouts_by_cashier = Checkout.where({:cashier_id => @current_cashier.id})
+  checkouts_by_cashier.each do |checkout|
+    puts "Customer# #{checkout.customer_id} -- total: $#{checkout.total}"
+  end
+
+  puts "\nWould you like to see another cashier's history? y/n"
   choice = gets.chomp
   case choice
   when 'y'

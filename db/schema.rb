@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140818205532) do
+ActiveRecord::Schema.define(version: 20140819223450) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -27,6 +27,7 @@ ActiveRecord::Schema.define(version: 20140818205532) do
     t.integer  "cashier_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.decimal  "total",       precision: 8, scale: 2
   end
 
   create_table "customers", force: true do |t|
