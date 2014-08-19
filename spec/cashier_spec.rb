@@ -30,12 +30,4 @@ describe Cashier do
     purchase2 = Purchase.create({:product_id => 2, :quantity => 3, :checkout_id => checkout.id})
     expect(cashier.purchases).to eq [purchase1, purchase2]
   end
-
-  # it 'shows a list of purchases associated with a cashier' do
-  #   cashier = Cashier.create({:name => 'Vic'})
-  #   checkout = Checkout.create({:customer_id => 1, :cashier_id => cashier.id})
-  #   purchase1 = Purchase.create({:product_id => 1, :quantity => 2, :checkout_id => checkout.id})
-  #   purchase2 = Purchase.create({:product_id => 2, :quantity => 3, :checkout_id => checkout.id})
-  #   expect(cashier.show_purchases).to eq ["1. : , purchase2"]
-  # end
 end

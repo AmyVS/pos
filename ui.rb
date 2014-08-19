@@ -4,6 +4,7 @@ require './lib/customer'
 require './lib/product'
 require './lib/checkout'
 require './lib/purchase'
+require 'pry'
 
 ActiveRecord::Base.establish_connection(YAML::load(File.open('./db/config.yml'))['development'])
 
@@ -11,6 +12,8 @@ ActiveRecord::Base.establish_connection(YAML::load(File.open('./db/config.yml'))
 @running_items = []
 @current_cashier = nil
 @current_product = nil
+@current_purchase = nil
+@current_checkout = nil
 
 def welcome
   system('clear')
@@ -83,6 +86,7 @@ end
 def checkout_patron
   patron = Customer.create
   puts "Customer ID is #{patron.id}"
+  @current_checkout = Checkout.create({:cashier_id => @current_cashier.id, :customer_id => patron.id})
   cart
 end
 
@@ -102,6 +106,8 @@ def cart
 
     puts "Please enter the quantity of that item"
     quantity = gets.chomp
+
+    @current_purchase = Purchase.create({:product_id => @current_product.id, :quantity => quantity.to_i, :checkout_id => @current_checkout.id})
 
     total_item_price = @current_product.price.to_f * quantity.to_i
     @running_cost << total_item_price
@@ -201,9 +207,29 @@ def add_product
 end
 
 def total_cashier_checkouts
-  puts Cashier.purchases
+  puts Cashier.show_list
+  puts 'Please select your number'
+  cashier_number = gets.chomp
 
+  @current_cashier = Cashier.all.fetch((cashier_number.to_i)-1) do |number|
+    puts "#{number+1} is not a valid choice. Please try again."
+    total_cashier_checkouts
+  end
+
+  puts "Here's #{@current_cashier.name}'s cashier history:\n"
+  @current_cashier.purchases.each_with_index do |purchase, index|
+    puts "#{index+1}. #{purchase.product.name} -- quantity: #{purchase.quantity}, price: $#{purchase.product.price}"
+  end
+
+  puts "Would you like to see another cashier's history? y/n"
+  choice = gets.chomp
+  case choice
+  when 'y'
+    total_cashier_checkouts
+  else
+    puts "Returning to the manager menu..."
+    manager_menu
+  end
 end
 
 welcome
-

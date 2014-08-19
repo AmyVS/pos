@@ -29,4 +29,5 @@ describe Checkout do
     checkout = Checkout.create({:customer_id => 2, :cashier_id => cashier.id})
     expect(checkout.cashier).to eq cashier
   end
+
 end
