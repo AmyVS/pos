@@ -8,16 +8,16 @@ describe Checkout do
     expect(checkout.purchases).to eq [purchase1, purchase2]
   end
 
-  it 'has one customer' do
+  it 'belongs to a customer' do
     customer = Customer.create
     cashier = Cashier.create
     checkout = Checkout.create({:customer_id => customer.id, :cashier_id => cashier.id})
-    expect(checkout.customer_id).to eq customer.id
+    expect(checkout.customer).to eq customer
   end
 
-  it 'has one cashier' do
+  it 'belongs to a cashier' do
     cashier = Cashier.create({:name => 'Vic'})
     checkout = Checkout.create({:customer_id => 2, :cashier_id => cashier.id})
-    expect(checkout.cashier_id).to eq cashier.id
+    expect(checkout.cashier).to eq cashier
   end
 end

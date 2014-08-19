@@ -160,6 +160,8 @@ def patron_receipt
   end
   final_total = @running_cost.inject(:+)
   puts "Your total cost is $#{final_total}"
+  puts "Thank you! Come again!"
+  new_patron
 end
 
 def add_cashier
@@ -196,6 +198,11 @@ def add_product
     puts "Returning to the manager menu..."
     manager_menu
   end
+end
+
+def total_cashier_checkouts
+  puts Cashier.purchases
+
 end
 
 welcome

@@ -1,5 +1,6 @@
 class Cashier < ActiveRecord::Base
-  belongs_to :checkout
+  has_many :checkouts
+  has_many :purchases, through: :checkouts
 
   def self.show_list
     cashiers = []

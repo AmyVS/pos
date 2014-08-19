@@ -1,5 +1,5 @@
 class Checkout < ActiveRecord::Base
   has_many :purchases
-  has_one :customer
-  has_one :cashier
+  belongs_to :customer
+  belongs_to :cashier
 end
