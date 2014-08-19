@@ -133,8 +133,14 @@ end
 
 def manager_menu
   puts "This is a very official menu"
+  puts "'c' to add a cashier"
+  puts "'p' to add a product"
+  puts "'d' to see total daily sales"
+  puts "'t' to see totaly checkouts"
+  puts "'i' to see the most popular items"
+  puts "'m' to see most returned"
   add_cashier
-  add_a_product
+  add_product
   total_daily_sales
   total_cashier_checkouts
   popular_products
@@ -149,10 +155,41 @@ def patron_receipt
   final_total = @running_cost.inject(:+)
   puts "Your total cost is $#{final_total}"
 end
+
 def add_cashier
+  puts Cashier.show_list
   puts 'What is the cashier name?'
   name = gets.chomp
-  Cashier.create(name: name)
+  Cashier.create(:name => name)
+
+  puts "Would you like to add another cashier? y/n"
+  choice = gets.chomp
+  case choice
+  when 'y'
+    add_cashier
+  else
+    puts "Returning to the manager menu..."
+    manager_menu
+  end
+end
+
+def add_product
+  puts Product.show_list
+  puts "What is the name of the product?"
+  name = gets.chomp
+  puts "What is the price of that product?"
+  price = gets.chomp
+  Product.create(:name => name, :price => price)
+
+  puts "Would you like to add another product? y/n"
+  choice = gets.chomp
+  case choice
+  when 'y'
+    add_cashier
+  else
+    puts "Returning to the manager menu..."
+    manager_menu
+  end
 end
 
 welcome
